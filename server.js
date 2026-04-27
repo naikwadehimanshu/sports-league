@@ -11,7 +11,12 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5000',
+    'https://https://sports-league-59bd1.web.app',      // ← add your Firebase URL
+    'https://sports-league-59bd1.firebaseapp.com' // ← add this too
+  ],
   credentials: true
 }));
 app.use(express.json());
