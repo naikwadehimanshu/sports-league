@@ -10,13 +10,23 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5000',
-    'https://https://sports-league-59bd1.web.app',      // ← add your Firebase URL
-    'https://sports-league-59bd1.firebaseapp.com' // ← add this too
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5000',
+      'http://localhost:3000',
+      'https://sports-league-59bd1.web.app',
+      'https://sports-league-59bd1.firebaseapp.com'
+    ];
+    // Allow requests with no origin (Postman, mobile apps, etc.)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
